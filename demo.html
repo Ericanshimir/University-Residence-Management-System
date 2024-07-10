@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Residence Management System</title>
+</head>
+<body>
+    <h1>University Residence Management System</h1>
+    <script src="residence_management.js"></script>
+    <script>
+        // Use the classes and functionalities here for demonstration
+        // Example: Creating and assigning residences, handling maintenance requests
+        console.log('--- University Residence Management System ---');
+
+        // Creating Residences
+        const dorm1 = new DormRoom('Dorm A', '123 University St', 200);
+        const apt1 = new Apartment('Apartment B', '456 College Ave', 3);
+
+        // Creating Students
+        const student1 = new Student('Alice', 'S1001', 'Female');
+        const student2 = new Student('Bob', 'S1002', 'Male');
+
+        // Assigning Residences to Students
+        student1.assignResidence(dorm1);
+        student2.assignResidence(apt1);
+
+        // Logging Rent Calculation
+        console.log(`${student1.name}'s rent is $${dorm1.calculateRent()}`);
+        console.log(`${student2.name}'s rent is $${apt1.calculateRent()}`);
+
+        // Creating Maintenance Requests
+        const maintenance1 = new MaintenanceRequest('Leaky faucet', student1);
+        const maintenance2 = new MaintenanceRequest('Broken window', student2);
+
+        // Assigning Employee to Maintenance Request
+        maintenance1.assignEmployee('Maintenance Guy');
+        maintenance1.updateStatus('in progress');
+
+        // Logging Maintenance Requests
+        console.log(maintenance1);
+        console.log(maintenance2);
+    </script>
+</body>
+</html>

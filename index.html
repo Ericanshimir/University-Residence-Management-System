@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>University Residence Management System</title>
+  <title>University Residence Management System</title>
+  <script src="residenceManagement.js" defer></script>
 </head>
 <body>
+<<<<<<< Updated upstream
     <h1>University Residence Management System</h1>
     <script src="residenceManagement.js"></script>
     <script>
@@ -28,5 +28,28 @@
         const maintenanceRequest = new MaintenanceRequest("Leaky faucet", "submitted", student);
         console.log(maintenanceRequest);
     </script>
+=======
+  <h1>University Residence Management System</h1>
+  <script>
+    // Create residences
+    const dorm1 = new DormRoom("Dorm A", "123 Dorm St", 300);
+    const apt1 = new Apartment("Apartment B", "456 Apt Blvd", 3);
+
+    // Create students
+    const student1 = new Student("John Doe", "S12345", "Male");
+    const student2 = new Student("Jane Smith", "S67890", "Female");
+
+    // Assign residences
+    student1.assignResidence(dorm1);
+    student2.assignResidence(apt1);
+
+    // Submit maintenance requests
+    const request1 = new MaintenanceRequest("Leaky faucet", student1);
+    request1.assignEmployee("Employee1");
+
+    console.log(student1, student2);
+    console.log(request1);
+  </script>
+>>>>>>> Stashed changes
 </body>
 </html>

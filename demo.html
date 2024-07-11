@@ -7,39 +7,26 @@
 </head>
 <body>
     <h1>University Residence Management System</h1>
-    <script src="residence_management.js"></script>
+    <script src="residenceManagement.js"></script>
     <script>
-        // Use the classes and functionalities here for demonstration
-        // Example: Creating and assigning residences, handling maintenance requests
-        console.log('--- University Residence Management System ---');
+        // Create a dorm room
+        const dorm = new DormRoom("Dorm A", "123 University St", false, 300);
+        console.log(dorm);
+        console.log("Dorm Rent: $" + dorm.calculateRent());
 
-        // Creating Residences
-        const dorm1 = new DormRoom('Dorm A', '123 University St', 200);
-        const apt1 = new Apartment('Apartment B', '456 College Ave', 3);
+        // Create an apartment
+        const apartment = new Apartment("Apartment B", "456 University Ave", false, 3);
+        console.log(apartment);
+        console.log("Apartment Rent: $" + apartment.calculateRent());
 
-        // Creating Students
-        const student1 = new Student('Alice', 'S1001', 'Female');
-        const student2 = new Student('Bob', 'S1002', 'Male');
+        // Create a student and assign residence
+        const student = new Student("John Doe", "12345", "Male");
+        student.assignResidence(dorm);
+        console.log(student);
 
-        // Assigning Residences to Students
-        student1.assignResidence(dorm1);
-        student2.assignResidence(apt1);
-
-        // Logging Rent Calculation
-        console.log(`${student1.name}'s rent is $${dorm1.calculateRent()}`);
-        console.log(`${student2.name}'s rent is $${apt1.calculateRent()}`);
-
-        // Creating Maintenance Requests
-        const maintenance1 = new MaintenanceRequest('Leaky faucet', student1);
-        const maintenance2 = new MaintenanceRequest('Broken window', student2);
-
-        // Assigning Employee to Maintenance Request
-        maintenance1.assignEmployee('Maintenance Guy');
-        maintenance1.updateStatus('in progress');
-
-        // Logging Maintenance Requests
-        console.log(maintenance1);
-        console.log(maintenance2);
+        // Create a maintenance request
+        const maintenanceRequest = new MaintenanceRequest("Leaky faucet", "submitted", student);
+        console.log(maintenanceRequest);
     </script>
 </body>
 </html>

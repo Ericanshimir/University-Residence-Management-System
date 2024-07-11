@@ -1,83 +1,78 @@
-// Base Class for Residence
+/**
+ * Base class for all types of residences.
+ */
 class Residence {
     /**
-     * Creates a residence with a name, address, and occupancy status.
      * @param {string} name - The name of the residence.
      * @param {string} address - The address of the residence.
+     * @param {boolean} isOccupied - Whether the residence is currently occupied.
      */
-    constructor(name, address) {
+    constructor(name, address, isOccupied) {
         this.name = name;
         this.address = address;
-        this.isOccupied = false;
-    }
-
-    /**
-     * Marks the residence as occupied.
-     */
-    occupy() {
-        this.isOccupied = true;
-    }
-
-    /**
-     * Marks the residence as vacant.
-     */
-    vacate() {
-        this.isOccupied = false;
+        this.isOccupied = isOccupied;
     }
 }
 
-// Subclass for DormRoom
+/**
+ * Class representing a dorm room.
+ * @extends Residence
+ */
 class DormRoom extends Residence {
     /**
-     * Creates a dorm room with a name, address, and size.
      * @param {string} name - The name of the dorm room.
      * @param {string} address - The address of the dorm room.
+     * @param {boolean} isOccupied - Whether the dorm room is currently occupied.
      * @param {number} size - The size of the dorm room in square footage.
      */
-    constructor(name, address, size) {
-        super(name, address);
-        this.size = size; // in square footage
+    constructor(name, address, isOccupied, size) {
+        super(name, address, isOccupied);
+        this.size = size;
     }
 
     /**
-     * Calculates the monthly rent for the dorm room.
-     * @returns {number} The calculated rent.
+     * Calculate the rent based on the size of the dorm room.
+     * @returns {number} - The calculated rent.
      */
     calculateRent() {
-        return this.size * 10; // Example rent calculation
+        return this.size * 10; // Example calculation
     }
 }
 
-// Subclass for Apartment
+/**
+ * Class representing an apartment.
+ * @extends Residence
+ */
 class Apartment extends Residence {
     /**
-     * Creates an apartment with a name, address, and number of bedrooms.
      * @param {string} name - The name of the apartment.
      * @param {string} address - The address of the apartment.
+     * @param {boolean} isOccupied - Whether the apartment is currently occupied.
      * @param {number} numberOfBedrooms - The number of bedrooms in the apartment.
      */
-    constructor(name, address, numberOfBedrooms) {
-        super(name, address);
+    constructor(name, address, isOccupied, numberOfBedrooms) {
+        super(name, address, isOccupied);
         this.numberOfBedrooms = numberOfBedrooms;
     }
 
     /**
-     * Calculates the monthly rent for the apartment.
-     * @returns {number} The calculated rent.
+     * Calculate the rent based on the number of bedrooms.
+     * @returns {number} - The calculated rent.
      */
     calculateRent() {
-        return this.numberOfBedrooms * 300; // Example rent calculation
+        return this.numberOfBedrooms * 100; // Example calculation
     }
 }
 
-// Student Class
+/**
+ * Class representing a student.
+ */
 class Student {
     /**
-     * Creates a student with a name, student ID, gender, and assigned residence.
      * @param {string} name - The name of the student.
-     * @param {string} studentID - The ID of the student.
+     * @param {string} studentID - The student ID.
      * @param {string} gender - The gender of the student.
-     * @param {Residence|null} residence - The residence assigned to the student.
+     * @param {Residence} residence - The residence assigned to the student (optional).
      */
     constructor(name, studentID, gender, residence = null) {
         this.name = name;
@@ -87,82 +82,37 @@ class Student {
     }
 
     /**
-     * Assigns a residence to the student and marks the residence as occupied.
-     * @param {Residence} residence - The residence to assign.
+     * Assign a residence to the student.
+     * @param {Residence} residence - The residence to be assigned.
      */
     assignResidence(residence) {
         this.residence = residence;
-        residence.occupy();
-    }
-
-    /**
-     * Vacates the residence assigned to the student and marks it as vacant.
-     */
-    vacateResidence() {
-        if (this.residence) {
-            this.residence.vacate();
-            this.residence = null;
-        }
+        residence.isOccupied = true;
     }
 }
 
-// MaintenanceRequest Class
+/**
+ * Class representing a maintenance request.
+ */
 class MaintenanceRequest {
     /**
-     * Creates a maintenance request with a description, status, submitting student, and assigned employee.
      * @param {string} description - The description of the maintenance request.
+     * @param {string} status - The current status of the request (e.g., "submitted", "in progress", "completed").
      * @param {Student} student - The student who submitted the request.
+     * @param {string} assignedEmployee - The employee assigned to the request (optional).
      */
-    constructor(description, student) {
+    constructor(description, status, student, assignedEmployee = null) {
         this.description = description;
-        this.status = 'submitted';
+        this.status = status;
         this.student = student;
-        this.assignedEmployee = null;
+        this.assignedEmployee = assignedEmployee;
     }
 
     /**
-     * Assigns an employee to the maintenance request.
-     * @param {string} employee - The name of the employee.
+     * Assign an employee to the maintenance request.
+     * @param {string} employee - The employee to be assigned.
      */
     assignEmployee(employee) {
         this.assignedEmployee = employee;
     }
-
-    /**
-     * Updates the status of the maintenance request.
-     * @param {string} newStatus - The new status of the request.
-     */
-    updateStatus(newStatus) {
-        this.status = newStatus;
-    }
 }
-
-// Demonstration of functionalities
-
-// Creating Residences
-const dorm1 = new DormRoom('Dorm A', '123 University St', 200);
-const apt1 = new Apartment('Apartment B', '456 College Ave', 3);
-
-// Creating Students
-const student1 = new Student('Alice', 'S1001', 'Female');
-const student2 = new Student('Bob', 'S1002', 'Male');
-
-// Assigning Residences to Students
-student1.assignResidence(dorm1);
-student2.assignResidence(apt1);
-
-// Logging Rent Calculation
-console.log(`${student1.name}'s rent is $${dorm1.calculateRent()}`);
-console.log(`${student2.name}'s rent is $${apt1.calculateRent()}`);
-
-// Creating Maintenance Requests
-const maintenance1 = new MaintenanceRequest('Leaky faucet', student1);
-const maintenance2 = new MaintenanceRequest('Broken window', student2);
-
-// Assigning Employee to Maintenance Request
-maintenance1.assignEmployee('Maintenance Guy');
-maintenance1.updateStatus('in progress');
-
-// Logging Maintenance Requests
-console.log(maintenance1);
-console.log(maintenance2);

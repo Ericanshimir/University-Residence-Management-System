@@ -2,74 +2,155 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>University Residence Management System</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            margin: 20px;
-        }
-        .card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .card h2 {
-            margin-top: 0;
-        }
-    </style>
+    <script defer src="ResidenceManagement.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>University Residence Management System</h1>
-        <div id="dormRoom" class="card"></div>
-        <div id="apartment" class="card"></div>
-        <div id="student" class="card"></div>
-        <div id="maintenanceRequest" class="card"></div>
-    </div>
-    <script src="residenceManagement.js"></script>
+    <h1>University Residence Management System Demo</h1>
+
+    <!-- Form to create a dorm room -->
+    <h2>Create Dorm Room</h2>
+    <form id="create-dorm-form">
+        <label for="dorm-name">Name:</label>
+        <input type="text" id="dorm-name" required>
+        <label for="dorm-address">Address:</label>
+        <input type="text" id="dorm-address" required>
+        <label for="dorm-size">Size (sq ft):</label>
+        <input type="number" id="dorm-size" required>
+        <button type="submit">Create Dorm Room</button>
+    </form>
+
+    <!-- Form to create an apartment -->
+    <h2>Create Apartment</h2>
+    <form id="create-apartment-form">
+        <label for="apartment-name">Name:</label>
+        <input type="text" id="apartment-name" required>
+        <label for="apartment-address">Address:</label>
+        <input type="text" id="apartment-address" required>
+        <label for="apartment-bedrooms">Number of Bedrooms:</label>
+        <input type="number" id="apartment-bedrooms" required>
+        <button type="submit">Create Apartment</button>
+    </form>
+
+    <!-- Form to create a student -->
+    <h2>Create Student</h2>
+    <form id="create-student-form">
+        <label for="student-name">Name:</label>
+        <input type="text" id="student-name" required>
+        <label for="student-id">Student ID:</label>
+        <input type="text" id="student-id" required>
+        <label for="student-gender">Gender:</label>
+        <input type="text" id="student-gender" required>
+        <button type="submit">Create Student</button>
+    </form>
+
+    <!-- Form to assign a student to a residence -->
+    <h2>Assign Student to Residence</h2>
+    <form id="assign-student-form">
+        <label for="assign-student-id">Student ID:</label>
+        <input type="text" id="assign-student-id" required>
+        <label for="assign-residence-name">Residence Name:</label>
+        <input type="text" id="assign-residence-name" required>
+        <button type="submit">Assign Residence</button>
+    </form>
+
+    <!-- Form to create a maintenance request -->
+    <h2>Create Maintenance Request</h2>
+    <form id="create-maintenance-form">
+        <label for="maintenance-description">Description:</label>
+        <input type="text" id="maintenance-description" required>
+        <label for="maintenance-student-id">Student ID:</label>
+        <input type="text" id="maintenance-student-id" required>
+        <button type="submit">Create Maintenance Request</button>
+    </form>
+
+    <!-- Div to display the details -->
+    <div id="content"></div>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Create a dorm room
-            const dorm = new DormRoom("Dorm A", "123 University St", false, 300);
-            const dormDiv = document.getElementById("dormRoom");
-            dormDiv.innerHTML = `<h2>Dorm Room</h2>
-                <p>Name: ${dorm.name}</p>
-                <p>Address: ${dorm.address}</p>
-                <p>Size: ${dorm.size} sq ft</p>
-                <p>Rent: $${dorm.calculateRent()}</p>
-                <p>Occupied: ${dorm.isOccupied ? "Yes" : "No"}</p>`;
+        document.addEventListener("DOMContentLoaded", () => {
+            const residences = [];
+            const students = [];
+            const maintenanceRequests = [];
 
-            // Create an apartment
-            const apartment = new Apartment("Apartment B", "456 University Ave", false, 3);
-            const apartmentDiv = document.getElementById("apartment");
-            apartmentDiv.innerHTML = `<h2>Apartment</h2>
-                <p>Name: ${apartment.name}</p>
-                <p>Address: ${apartment.address}</p>
-                <p>Number of Bedrooms: ${apartment.numberOfBedrooms}</p>
-                <p>Rent: $${apartment.calculateRent()}</p>
-                <p>Occupied: ${apartment.isOccupied ? "Yes" : "No"}</p>`;
+            // Form handlers
+            document.getElementById("create-dorm-form").addEventListener("submit", (e) => {
+                e.preventDefault();
+                const name = document.getElementById("dorm-name").value;
+                const address = document.getElementById("dorm-address").value;
+                const size = parseInt(document.getElementById("dorm-size").value);
+                const dorm = new DormRoom(name, address, size);
+                residences.push(dorm);
+                displayDetails();
+            });
 
-            // Create a student and assign residence
-            const student = new Student("John Doe", "12345", "Male");
-            student.assignResidence(dorm);
-            const studentDiv = document.getElementById("student");
-            studentDiv.innerHTML = `<h2>Student</h2>
-                <p>Name: ${student.name}</p>
-                <p>Student ID: ${student.studentID}</p>
-                <p>Gender: ${student.gender}</p>
-                <p>Assigned Residence: ${student.residence.name}</p>`;
+            document.getElementById("create-apartment-form").addEventListener("submit", (e) => {
+                e.preventDefault();
+                const name = document.getElementById("apartment-name").value;
+                const address = document.getElementById("apartment-address").value;
+                const numBedrooms = parseInt(document.getElementById("apartment-bedrooms").value);
+                const apartment = new Apartment(name, address, numBedrooms);
+                residences.push(apartment);
+                displayDetails();
+            });
 
-            // Create a maintenance request
-            const maintenanceRequest = new MaintenanceRequest("Leaky faucet", "submitted", student);
-            const maintenanceRequestDiv = document.getElementById("maintenanceRequest");
-            maintenanceRequestDiv.innerHTML = `<h2>Maintenance Request</h2>
-                <p>Description: ${maintenanceRequest.description}</p>
-                <p>Status: ${maintenanceRequest.status}</p>
-                <p>Submitted by: ${maintenanceRequest.student.name}</p>`;
+            document.getElementById("create-student-form").addEventListener("submit", (e) => {
+                e.preventDefault();
+                const name = document.getElementById("student-name").value;
+                const studentId = document.getElementById("student-id").value;
+                const gender = document.getElementById("student-gender").value;
+                const student = new Student(name, studentId, gender);
+                students.push(student);
+                displayDetails();
+            });
+
+            document.getElementById("assign-student-form").addEventListener("submit", (e) => {
+                e.preventDefault();
+                const studentId = document.getElementById("assign-student-id").value;
+                const residenceName = document.getElementById("assign-residence-name").value;
+                const student = students.find(s => s.studentId === studentId);
+                const residence = residences.find(r => r.name === residenceName);
+                if (student && residence) {
+                    student.assignResidence(residence);
+                    displayDetails();
+                } else {
+                    alert("Student or Residence not found.");
+                }
+            });
+
+            document.getElementById("create-maintenance-form").addEventListener("submit", (e) => {
+                e.preventDefault();
+                const description = document.getElementById("maintenance-description").value;
+                const studentId = document.getElementById("maintenance-student-id").value;
+                const student = students.find(s => s.studentId === studentId);
+                if (student) {
+                    const maintenanceRequest = new MaintenanceRequest(description, student);
+                    maintenanceRequests.push(maintenanceRequest);
+                    displayDetails();
+                } else {
+                    alert("Student not found.");
+                }
+            });
+
+            function displayDetails() {
+                const contentDiv = document.getElementById("content");
+                contentDiv.innerHTML = `
+                    <h2>Residences</h2>
+                    <ul>
+                        ${residences.map(r => `<li>${r.constructor.name} - Name: ${r.name}, Address: ${r.address}, Occupied: ${r.occupied}</li>`).join('')}
+                    </ul>
+
+                    <h2>Students</h2>
+                    <ul>
+                        ${students.map(s => `<li>Name: ${s.name}, Student ID: ${s.studentId}, Gender: ${s.gender}, Residence: ${s.residence ? s.residence.name : 'None'}</li>`).join('')}
+                    </ul>
+
+                    <h2>Maintenance Requests</h2>
+                    <ul>
+                        ${maintenanceRequests.map(m => `<li>Description: ${m.description}, Status: ${m.status}, Submitted by: ${m.student.name}, Assigned Employee: ${m.assignedEmployee ? m.assignedEmployee : 'None'}</li>`).join('')}
+                    </ul>
+                `;
+            }
         });
     </script>
 </body>
